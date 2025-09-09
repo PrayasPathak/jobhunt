@@ -12,15 +12,14 @@ const NavLinks = () => {
     <div className="flex gap-5 h-full items-center text-mine-shaft-300">
       {links.map((link) => (
         <div
+          key={link.name}
           className={`h-full flex items-center border-t-[3px] ${
             location.pathname === "/" + link.url
               ? "border-bright-sun-400 text-bright-sun-400"
               : "border-transparent"
           }`}
         >
-          <Link key={link.name} to={link.url}>
-            {link.name}
-          </Link>
+          <Link to={link.url}>{link.name}</Link>
         </div>
       ))}
     </div>
