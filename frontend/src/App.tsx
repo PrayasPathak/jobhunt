@@ -1,8 +1,11 @@
 import { createTheme, MantineProvider } from "@mantine/core";
-import { BrowserRouter } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "@mantine/core/styles.css";
 import "@mantine/carousel/styles.css";
 import HomePage from "./pages/HomePage";
+import FindJobs from "./FindJobs/FindJobs";
+import Header from "./Header/Header";
+import Footer from "./Footer/Footer";
 
 const theme = createTheme({
   colors: {
@@ -33,13 +36,19 @@ const theme = createTheme({
       "#461902",
     ],
   },
+  fontFamily: "Poppins, sans-serif",
 });
 
 const App = () => {
   return (
-    <MantineProvider theme={theme}>
+    <MantineProvider theme={theme} defaultColorScheme="dark">
       <BrowserRouter>
-        <HomePage />
+        <Header />
+        <Routes>
+          <Route path="/find-jobs" element={<FindJobs />} />
+          <Route path="*" element={<HomePage />} />
+        </Routes>
+        <Footer />
       </BrowserRouter>
     </MantineProvider>
   );

@@ -1,14 +1,17 @@
 import { Avatar, Indicator } from "@mantine/core";
 import { IconAnchor, IconBell, IconSettings } from "@tabler/icons-react";
 import NavLinks from "./NavLinks";
+import { Link } from "react-router-dom";
 
 const Header = () => {
   return (
-    <div className="w-full h-20 bg-mine-shaft-950 text-white px-6 flex justify-between items-center">
+    <div className="w-full h-20 bg-mine-shaft-950 font-['Poppins'] text-white px-6 flex justify-between items-center">
       {/* Image */}
       <div className="flex gap-1 items-center text-bright-sun-400">
         <IconAnchor className="h-8 w-8" stroke={2.5} />
-        <span className="text-3xl font-semibold">JobHook</span>
+        <Link to="/" className="text-3xl font-semibold">
+          JobHook
+        </Link>
       </div>
       {/* Links */}
       <NavLinks />
