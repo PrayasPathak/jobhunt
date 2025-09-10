@@ -7,6 +7,7 @@ import FindJobs from "./pages/FindJobs";
 import Header from "./Header/Header";
 import Footer from "./Footer/Footer";
 import FindTalents from "./pages/FindTalents";
+import TalentProfielPage from "./pages/TalentProfielPage";
 
 const theme = createTheme({
   colors: {
@@ -48,6 +49,7 @@ const App = () => {
         <Routes>
           <Route path="/find-jobs" element={<FindJobs />} />
           <Route path="/find-talents" element={<FindTalents />} />
+          <Route path="/talent-profile" element={<TalentProfielPage />} />
           <Route path="*" element={<HomePage />} />
         </Routes>
         <Footer />
