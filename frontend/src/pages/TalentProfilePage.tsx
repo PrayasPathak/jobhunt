@@ -1,14 +1,13 @@
-import { Button, Divider } from "@mantine/core";
+import { Button } from "@mantine/core";
 import { IconArrowLeft } from "@tabler/icons-react";
 import { Link } from "react-router-dom";
-import Profile from "../TalentProfile/Profile";
 import { profile } from "../Data/TalentData";
+import Profile from "../TalentProfile/Profile";
 import RecommendTalent from "../TalentProfile/RecommendTalent";
 
-const TalentProfielPage = () => {
+const TalentProfilePage = () => {
   return (
     <div className="min-h-[100vh] bg-mine-shaft-950 font-['Poppins'] p-4">
-      <Divider />
       <Link to="/find-talents" className="my-4 inline-block">
         <Button
           variant="light"
@@ -25,4 +24,4 @@ const TalentProfielPage = () => {
     </div>
   );
 };
-export default TalentProfielPage;
+export default TalentProfilePage;
