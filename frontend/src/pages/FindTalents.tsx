@@ -1,15 +1,15 @@
 import { Divider } from "@mantine/core";
-import SearchBar from "./SearchBar";
-import Jobs from "./Jobs";
+import SearchBar from "../FindTalent/SearchBar";
+import Talents from "../FindTalent/Talents";
 
-const FindJobs = () => {
+const FindTalents = () => {
   return (
     <div className="min-h-[100vh] bg-mine-shaft-950 font-['Poppins']">
       <Divider size="xs" mx="md" />
       <SearchBar />
-      <Divider />
-      <Jobs />
+      <Divider size="xs" />
+      <Talents />
     </div>
   );
 };
-export default FindJobs;
+export default FindTalents;

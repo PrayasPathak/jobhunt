@@ -3,9 +3,10 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "@mantine/core/styles.css";
 import "@mantine/carousel/styles.css";
 import HomePage from "./pages/HomePage";
-import FindJobs from "./FindJobs/FindJobs";
+import FindJobs from "./pages/FindJobs";
 import Header from "./Header/Header";
 import Footer from "./Footer/Footer";
+import FindTalents from "./pages/FindTalents";
 
 const theme = createTheme({
   colors: {
@@ -46,6 +47,7 @@ const App = () => {
         <Header />
         <Routes>
           <Route path="/find-jobs" element={<FindJobs />} />
+          <Route path="/find-talents" element={<FindTalents />} />
           <Route path="*" element={<HomePage />} />
         </Routes>
         <Footer />
