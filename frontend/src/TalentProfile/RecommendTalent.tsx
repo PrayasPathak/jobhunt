@@ -1,5 +1,5 @@
 import { talents } from "../Data/TalentData";
-import JobCard from "../FindTalent/TalentCard";
+import TalentCard from "../FindTalent/TalentCard";
 
 const RecommendTalent = () => {
   return (
@@ -8,7 +8,7 @@ const RecommendTalent = () => {
 
       <div className="flex flex-col flex-wrap gap-5">
         {talents.map(
-          (talent, index) => index < 4 && <JobCard key={index} {...talent} />
+          (talent, index) => index < 4 && <TalentCard key={index} {...talent} />
         )}
       </div>
     </div>

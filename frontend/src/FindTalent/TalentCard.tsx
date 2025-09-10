@@ -13,7 +13,7 @@ interface Props {
   image: string;
 }
 
-const JobCard = ({
+const TalentCard = ({
   name,
   role,
   company,
@@ -78,4 +78,4 @@ const JobCard = ({
     </div>
   );
 };
-export default JobCard;
+export default TalentCard;
