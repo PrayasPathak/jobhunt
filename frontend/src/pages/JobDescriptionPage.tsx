@@ -17,7 +17,7 @@ const JobDescriptionPage = () => {
         </Button>
       </Link>
       <div className="flex gap-5 justify-around">
-        <JobDesc />
+        <JobDesc edit={false} />
         <RecommendedJobs />
       </div>
     </div>

@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "@mantine/core/styles.css";
 import "@mantine/carousel/styles.css";
 import "@mantine/tiptap/styles.css";
+import "@mantine/dates/styles.css";
 import HomePage from "./pages/HomePage";
 import FindJobs from "./pages/FindJobs";
 import Header from "./Header/Header";
@@ -13,6 +14,7 @@ import PostJobPage from "./pages/PostJobPage";
 import JobDescriptionPage from "./pages/JobDescriptionPage";
 import ApplyJobPage from "./pages/ApplyJobPage";
 import CompanyDetailPage from "./pages/CompanyDetailPage";
+import PostedJobsPage from "./pages/PostedJobsPage";
 
 const theme = createTheme({
   colors: {
@@ -60,6 +62,7 @@ const App = () => {
             <Route path="/find-talents" element={<FindTalents />} />
             <Route path="/talent-profile" element={<TalentProfilePage />} />
             <Route path="/post-job" element={<PostJobPage />} />
+            <Route path="/posted-jobs" element={<PostedJobsPage />} />
             <Route path="/company" element={<CompanyDetailPage />} />
             <Route path="/apply-job" element={<ApplyJobPage />} />
             <Route path="/jobs" element={<JobDescriptionPage />} />
