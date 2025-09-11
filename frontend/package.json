@@ -25,6 +25,7 @@
     "@tiptap/pm": "^3.4.2",
     "@tiptap/react": "^3.4.2",
     "@tiptap/starter-kit": "^3.4.2",
+    "dompurify": "^3.2.6",
     "embla-carousel": "^8.6.0",
     "embla-carousel-react": "^8.6.0",
     "react": "^18.3.1",
