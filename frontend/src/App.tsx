@@ -17,6 +17,7 @@ import PostedJobsPage from "./pages/PostedJobsPage";
 import PostJobPage from "./pages/PostJobPage";
 import SignupPage from "./pages/SignupPage";
 import TalentProfilePage from "./pages/TalentProfilePage";
+import ProfilePage from "./pages/ProfilePage";
 
 const theme = createTheme({
   colors: {
@@ -71,6 +72,7 @@ const App = () => {
             <Route path="/job-history" element={<JobHistoryPage />} />
             <Route path="/signup" element={<SignupPage />} />
             <Route path="/login" element={<SignupPage />} />
+            <Route path="/profile" element={<ProfilePage />} />
             <Route path="*" element={<HomePage />} />
           </Routes>
           <Footer />
