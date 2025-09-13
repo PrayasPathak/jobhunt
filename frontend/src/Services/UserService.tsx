@@ -17,3 +17,23 @@ export const loginUser = async (data: any) => {
       throw error;
     });
 };
+
+export const sendOtp = async (email: string) => {
+  return axiosInstance
+    .post("/api/users/sendOtp", email)
+    .then((res) => res.data)
+    .catch((error) => {
+      throw error;
+    });
+};
+
+export const verifyOtp = async (email: string, otp: string) => {
+  return axiosInstance
+    .get(`/api/users/verifyOtp/${email}/${otp}`)
+    .then((res) => res.data)
+    .catch((error) => {
+      throw error;
+    });
+};
+
+export const changePassword = async (email: string, password: string) => {};

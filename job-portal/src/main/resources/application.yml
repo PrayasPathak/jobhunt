@@ -3,7 +3,18 @@ spring:
     name: job-portal
   data:
     mongodb:
-      uri: mongodb://localhost:27017/job_portal
+      uri: mongodb://localhost:27017/${DB_NAME}
       auto-index-creation: true
+  mail:
+    host: smtp.gmail.com
+    port: ${MAIL_PORT}
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
 server:
-  port: 8000
+  port: ${SERVER_PORT}
