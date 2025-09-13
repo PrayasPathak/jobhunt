@@ -46,4 +46,9 @@ public class UserController {
         return ResponseEntity.ok()
                 .body(new ResponseDto("Otp has been verified"));
     }
+
+    @PostMapping("/changePassword")
+  public ResponseEntity<ResponseDto> changePassword(@RequestBody @Valid LoginRequest req ){
+      return ResponseEntity.ok().body(userService.changePassword(req));
+    }
 }

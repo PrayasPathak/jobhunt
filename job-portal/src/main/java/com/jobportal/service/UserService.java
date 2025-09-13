@@ -1,6 +1,7 @@
 package com.jobportal.service;
 
 import com.jobportal.dto.LoginRequest;
+import com.jobportal.dto.ResponseDto;
 import com.jobportal.dto.UserDto;
 import com.jobportal.exception.JobPortalException;
 import jakarta.mail.MessagingException;
@@ -13,4 +14,6 @@ public interface UserService {
     Boolean sendOtp(String email) throws MessagingException;
 
   Boolean verifyOtp(String email, String otp) throws JobPortalException;
+
+  ResponseDto changePassword(LoginRequest req);
 }

@@ -5,6 +5,8 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { loginValidation } from "../Services/FormValidation";
 import { loginUser } from "../Services/UserService";
+import { useDisclosure } from "@mantine/hooks";
+import ResetPassword from "./ResetPassword";
 
 const form = {
   email: "",
@@ -15,6 +17,7 @@ const Login = () => {
   const [data, setData] = useState(form);
   const [formError, setFormError] = useState<{ [key: string]: string }>(form);
   const navigate = useNavigate();
+  const [opened, { open, close }] = useDisclosure(false);
 
   const handleChange = (event) => {
     setFormError({ ...formError, [event.target.name]: "" });
@@ -63,46 +66,55 @@ const Login = () => {
   };
 
   return (
-    <div className="w-1/2 px-20 flex flex-col justify-center gap-3">
-      <div className="text-2xl font-semibold">Login to your account</div>
-      <TextInput
-        name="email"
-        value={data.email}
-        onChange={handleChange}
-        label="Email"
-        placeholder="Your email"
-        leftSection={<IconAt style={{ width: rem(16), height: rem(16) }} />}
-        withAsterisk
-        error={formError.email}
-      />
-      <PasswordInput
-        name="password"
-        value={data.password}
-        onChange={handleChange}
-        label="Password"
-        placeholder="Your password"
-        leftSection={<IconLock style={{ width: rem(16), height: rem(16) }} />}
-        withAsterisk
-        error={formError.password}
-      />
-      <Button variant="filled" autoContrast onClick={handleSubmit}>
-        Login
-      </Button>
+    <>
+      <div className="w-1/2 px-20 flex flex-col justify-center gap-3">
+        <div className="text-2xl font-semibold">Login to your account</div>
+        <TextInput
+          name="email"
+          value={data.email}
+          onChange={handleChange}
+          label="Email"
+          placeholder="Your email"
+          leftSection={<IconAt style={{ width: rem(16), height: rem(16) }} />}
+          withAsterisk
+          error={formError.email}
+        />
+        <PasswordInput
+          name="password"
+          value={data.password}
+          onChange={handleChange}
+          label="Password"
+          placeholder="Your password"
+          leftSection={<IconLock style={{ width: rem(16), height: rem(16) }} />}
+          withAsterisk
+          error={formError.password}
+        />
+        <Button variant="filled" autoContrast onClick={handleSubmit}>
+          Login
+        </Button>
 
-      <div className="mx-auto">
-        Don't have an account?{" "}
-        <span
-          onClick={() => {
-            navigate("/signup");
-            setFormError(form);
-            setData(form);
-          }}
-          className="text-bright-sun-400 hover:underline cursor-pointer"
+        <div className="mx-auto">
+          Don't have an account?{" "}
+          <span
+            onClick={() => {
+              navigate("/signup");
+              setFormError(form);
+              setData(form);
+            }}
+            className="text-bright-sun-400 hover:underline cursor-pointer"
+          >
+            Register
+          </span>
+        </div>
+        <div
+          className="text-bright-sun-400 hover:underline cursor-pointer text-center"
+          onClick={open}
         >
-          Register
-        </span>
+          Forgot Password?
+        </div>
       </div>
-    </div>
+      <ResetPassword opened={opened} close={close} />
+    </>
   );
 };
 export default Login;

@@ -1,6 +1,7 @@
 package com.jobportal.service.impl;
 
 import com.jobportal.dto.LoginRequest;
+import com.jobportal.dto.ResponseDto;
 import com.jobportal.dto.UserDto;
 import com.jobportal.entity.OTP;
 import com.jobportal.entity.User;
@@ -55,20 +56,28 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Boolean verifyOtp(String email, String otp) throws JobPortalException{
+    public Boolean verifyOtp(String email, String otp) throws JobPortalException {
         OTP otpEntity = otpRepository.findById(email)
-                .orElseThrow(()-> new JobPortalException("OTP is invalid or expired"));
-        if(!otpEntity.getOtpCode().equals(otp))
+                .orElseThrow(() -> new JobPortalException("OTP is invalid or expired"));
+        if (!otpEntity.getOtpCode().equals(otp))
             throw new JobPortalException("OTP is incorrect");
         return true;
     }
 
+    @Override
+    public ResponseDto changePassword(LoginRequest req) {
+        User user = userRepository.findByEmail(req.getEmail())
+                .orElseThrow(() -> new JobPortalException("User not found"));
+        user.setPassword(passwordEncoder.encode(req.getPassword()));
+        userRepository.save(user);
+        return new ResponseDto("Password changed successfully");
+    }
+
     @Scheduled(fixedRate = 60000)
-    public void removeExpiredOTPs(){
+    public void removeExpiredOTPs() {
         LocalDateTime expiryTme = LocalDateTime.now().minusMinutes(5);
-        System.out.println("Hello World");
-        List<OTP> expiredOTPs= otpRepository.findByCreationTimeBefore(expiryTme);
-        if(!expiredOTPs.isEmpty()){
+        List<OTP> expiredOTPs = otpRepository.findByCreationTimeBefore(expiryTme);
+        if (!expiredOTPs.isEmpty()) {
             otpRepository.deleteAll(expiredOTPs);
             System.out.println("Removed " + expiredOTPs.size() + " expired OTPs");
         }
