@@ -11,9 +11,12 @@ import com.jobportal.service.UserService;
 import com.jobportal.utility.EmailService;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -58,5 +61,16 @@ public class UserServiceImpl implements UserService {
         if(!otpEntity.getOtpCode().equals(otp))
             throw new JobPortalException("OTP is incorrect");
         return true;
+    }
+
+    @Scheduled(fixedRate = 60000)
+    public void removeExpiredOTPs(){
+        LocalDateTime expiryTme = LocalDateTime.now().minusMinutes(5);
+        System.out.println("Hello World");
+        List<OTP> expiredOTPs= otpRepository.findByCreationTimeBefore(expiryTme);
+        if(!expiredOTPs.isEmpty()){
+            otpRepository.deleteAll(expiredOTPs);
+            System.out.println("Removed " + expiredOTPs.size() + " expired OTPs");
+        }
     }
 }
