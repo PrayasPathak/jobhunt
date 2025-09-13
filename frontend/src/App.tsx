@@ -1,7 +1,9 @@
 import "@mantine/carousel/styles.css";
 import { createTheme, Divider, MantineProvider } from "@mantine/core";
+import { Notifications } from "@mantine/notifications";
 import "@mantine/core/styles.css";
 import "@mantine/dates/styles.css";
+import "@mantine/notifications/styles.css";
 import "@mantine/tiptap/styles.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Footer from "./Footer/Footer";
@@ -15,9 +17,9 @@ import JobDescriptionPage from "./pages/JobDescriptionPage";
 import JobHistoryPage from "./pages/JobHistoryPage";
 import PostedJobsPage from "./pages/PostedJobsPage";
 import PostJobPage from "./pages/PostJobPage";
+import ProfilePage from "./pages/ProfilePage";
 import SignupPage from "./pages/SignupPage";
 import TalentProfilePage from "./pages/TalentProfilePage";
-import ProfilePage from "./pages/ProfilePage";
 
 const theme = createTheme({
   colors: {
@@ -56,6 +58,7 @@ const theme = createTheme({
 const App = () => {
   return (
     <MantineProvider theme={theme} defaultColorScheme="dark">
+      <Notifications position="top-center" zIndex={1000} />
       <BrowserRouter>
         <div className="relative">
           <Header />
