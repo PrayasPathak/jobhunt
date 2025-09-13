@@ -1,11 +1,22 @@
-import { Button, PasswordInput, rem, TextInput } from "@mantine/core";
-import { notifications } from "@mantine/notifications";
-import { IconAt, IconCheck, IconLock, IconX } from "@tabler/icons-react";
+import {
+  Button,
+  LoadingOverlay,
+  PasswordInput,
+  rem,
+  TextInput,
+} from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
+import { IconAt, IconLock } from "@tabler/icons-react";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { loginValidation } from "../Services/FormValidation";
+import {
+  errorNotification,
+  successNotification,
+} from "../Services/NotificationService";
 import { loginUser } from "../Services/UserService";
-import { useDisclosure } from "@mantine/hooks";
+import { setUser } from "../Slices/UsersSlice";
 import ResetPassword from "./ResetPassword";
 
 const form = {
@@ -18,6 +29,8 @@ const Login = () => {
   const [formError, setFormError] = useState<{ [key: string]: string }>(form);
   const navigate = useNavigate();
   const [opened, { open, close }] = useDisclosure(false);
+  const dispatch = useDispatch();
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (event) => {
     setFormError({ ...formError, [event.target.name]: "" });
@@ -25,6 +38,7 @@ const Login = () => {
   };
 
   const handleSubmit = () => {
+    setLoading(true);
     let valid = true,
       newFormError: { [key: string]: string } = {};
     for (let key in data) {
@@ -37,36 +51,32 @@ const Login = () => {
         .then((res) => {
           console.log(res);
           setData(form);
-          notifications.show({
-            title: "Login Successful",
-            message: "Redirecting to home page...",
-            withCloseButton: true,
-            icon: <IconCheck style={{ width: "90%", height: "90%" }} />,
-            color: "teal",
-            withBorder: true,
-            className: "border border-green-500",
-          });
+          successNotification(
+            "Login Successful",
+            "Redirecting to home page..."
+          );
           setTimeout(() => {
+            setLoading(false);
+            dispatch(setUser(res));
             navigate("/");
           }, 4000);
         })
         .catch((err) => {
+          setLoading(false);
           console.log(err.response.data);
-          notifications.show({
-            title: "Login error",
-            message: err.response.data.errorMessage,
-            withCloseButton: true,
-            icon: <IconX style={{ width: "90%", height: "90%" }} />,
-            color: "red",
-            withBorder: true,
-            className: "border border-red-500",
-          });
+          errorNotification("Login failed", err.response.data.errorMessage);
         });
     }
   };
 
   return (
     <>
+      <LoadingOverlay
+        visible={loading}
+        zIndex={1000}
+        overlayProps={{ radius: "sm", blur: 2 }}
+        loaderProps={{ color: "brightSun.4", type: "bars" }}
+      />
       <div className="w-1/2 px-20 flex flex-col justify-center gap-3">
         <div className="text-2xl font-semibold">Login to your account</div>
         <TextInput
@@ -89,7 +99,12 @@ const Login = () => {
           withAsterisk
           error={formError.password}
         />
-        <Button variant="filled" autoContrast onClick={handleSubmit}>
+        <Button
+          variant="filled"
+          autoContrast
+          onClick={handleSubmit}
+          loading={loading}
+        >
           Login
         </Button>
 
