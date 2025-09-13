@@ -8,6 +8,7 @@ import com.jobportal.entity.User;
 import com.jobportal.exception.JobPortalException;
 import com.jobportal.repository.OTPRepository;
 import com.jobportal.repository.UserRepository;
+import com.jobportal.service.ProfileService;
 import com.jobportal.service.UserService;
 import com.jobportal.utility.EmailService;
 import jakarta.mail.MessagingException;
@@ -27,6 +28,7 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
     private final EmailService emailService;
     private final OTPRepository otpRepository;
+    private final ProfileService profileService;
 
     @Override
     public UserDto register(UserDto dto) {
@@ -35,6 +37,9 @@ public class UserServiceImpl implements UserService {
             throw new JobPortalException("User already exists with the provided email");
         User user = dto.toEntity();
         user.setPassword(passwordEncoder.encode(dto.getPassword()));
+        user = userRepository.save(user);
+        String profileId = profileService.createProfile(user.getId(), user.getEmail());
+        user.setProfileId(profileId);
         return userRepository.save(user).toDto();
     }
 

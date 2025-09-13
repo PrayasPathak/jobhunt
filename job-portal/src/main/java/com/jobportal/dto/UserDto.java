@@ -15,28 +15,30 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class UserDto {
-  private String id;
-  @NotBlank(message = "Name is required")
-  private String name;
+    private String id;
+    @NotBlank(message = "Name is required")
+    private String name;
 
-  @NotBlank(message = "Email is required")
-  @Email(message = "Email is invalid")
-  private String email;
+    @NotBlank(message = "Email is required")
+    @Email(message = "Email is invalid")
+    private String email;
 
-  @Size(min = 8, message = "Password must be at least 8 characters long")
-  @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[*&^%$#@!()]).{8,}$", message = "Password must be at least 8 characters and include at least 1 lowercase, 1 uppercase, 1 digit, and 1 special characters")
-  @NotBlank(message = "Password is required")
-  private String password;
+    @Size(min = 8, message = "Password must be at least 8 characters long")
+    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[*&^%$#@!()]).{8,}$", message = "Password must be at least 8 characters and include at least 1 lowercase, 1 uppercase, 1 digit, and 1 special characters")
+    @NotBlank(message = "Password is required")
+    private String password;
 
-  private AccountType accountType;
+    private AccountType accountType;
+    private String profileId;
 
-  public User toEntity() {
-    return User.builder()
-        .id(this.id)
-        .name(this.name)
-        .email(this.email)
-        .password(this.password)
-        .accountType(this.accountType)
-        .build();
-  }
+    public User toEntity() {
+        return User.builder()
+                .id(this.id)
+                .name(this.name)
+                .email(this.email)
+                .password(this.password)
+                .accountType(this.accountType)
+                .profileId(this.profileId)
+                .build();
+    }
 }

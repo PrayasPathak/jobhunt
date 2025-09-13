@@ -14,21 +14,23 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @NoArgsConstructor
 @Builder
 public class User {
-  @Id
-  private String id;
-  private String name;
-  @Indexed(unique = true)
-  private String email;
-  private String password;
-  private AccountType accountType;
+    @Id
+    private String id;
+    private String name;
+    @Indexed(unique = true)
+    private String email;
+    private String password;
+    private AccountType accountType;
+    private String profileId;
 
-  public UserDto toDto() {
-    return UserDto.builder()
-        .id(this.id)
-        .name(this.name)
-        .email(this.email)
-        .password(this.password)
-        .accountType(this.accountType)
-        .build();
-  }
+    public UserDto toDto() {
+        return UserDto.builder()
+                .id(this.id)
+                .name(this.name)
+                .email(this.email)
+                .password(this.password)
+                .accountType(this.accountType)
+                .profileId(this.profileId)
+                .build();
+    }
 }
