@@ -1,4 +1,5 @@
 import { Combobox, InputBase, ScrollArea, useCombobox } from "@mantine/core";
+import { UseFormReturnType } from "@mantine/form";
 import { Icon, IconProps } from "@tabler/icons-react";
 import { useEffect, useState } from "react";
 
@@ -10,34 +11,30 @@ interface Props {
     IconProps & React.RefAttributes<Icon>
   >;
   value: string;
+  name: string;
+  form: UseFormReturnType<any>;
 }
 
-export function SelectInput({
-  label,
-  placeholder,
-  options,
-  leftSection,
-  value,
-}: Props) {
+export function SelectInput(props: Props) {
   const combobox = useCombobox({
     onDropdownClose: () => combobox.resetSelectedOption(),
   });
 
   const [data, setData] = useState<string[]>([]);
-  const [val, setVal] = useState<string | null>(null);
+  const [value, setValue] = useState<string | null>(null);
   const [search, setSearch] = useState("");
 
   useEffect(() => {
-    setData(options);
-    setVal(value);
-    setSearch(value);
+    setData(props.options);
+    setValue(props.form.getInputProps(props.name).value);
+    setSearch(props.form.getInputProps(props.name).value);
   }, []);
 
   const exactOptionMatch = data.some((item) => item === search);
   const filteredOptions = exactOptionMatch
     ? data
     : data.filter((item) =>
-        item.toLowerCase().includes(search.toLowerCase().trim())
+        item.toLowerCase().includes(search?.toLowerCase()?.trim())
       );
 
   const opts = filteredOptions.map((item) => (
@@ -53,10 +50,12 @@ export function SelectInput({
       onOptionSubmit={(val) => {
         if (val === "$create") {
           setData((current) => [...current, search]);
-          setVal(search);
+          setValue(search);
+          props.form.setFieldValue(props.name, search);
         } else {
-          setVal(val);
+          setValue(val);
           setSearch(val);
+          props.form.setFieldValue(props.name, val);
         }
 
         combobox.closeDropdown();
@@ -64,9 +63,10 @@ export function SelectInput({
     >
       <Combobox.Target>
         <InputBase
-          leftSection={<leftSection stroke={1.5} />}
+          {...props.form.getInputProps(props.name)}
+          leftSection={<props.leftSection stroke={1.5} />}
           withAsterisk
-          label={label}
+          label={props.label}
           rightSection={<Combobox.Chevron />}
           value={search}
           onChange={(event) => {
@@ -78,9 +78,9 @@ export function SelectInput({
           onFocus={() => combobox.openDropdown()}
           onBlur={() => {
             combobox.closeDropdown();
-            setSearch(val || "");
+            setSearch(value || "");
           }}
-          placeholder={placeholder}
+          placeholder={props.placeholder}
         />
       </Combobox.Target>
 
@@ -88,7 +88,7 @@ export function SelectInput({
         <Combobox.Options>
           <ScrollArea.Autosize mah={200} type="scroll">
             {opts}
-            {!exactOptionMatch && search.trim().length > 0 && (
+            {!exactOptionMatch && search?.trim()?.length > 0 && (
               <Combobox.Option value="$create">
                 + Create {search}
               </Combobox.Option>

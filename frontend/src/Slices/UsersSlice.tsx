@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { getItem, removeItem, setItem } from "../Services/LocalStorageService";
 
 const UserSlice = createSlice({
-  name: "user",
+  name: "profile",
   initialState: getItem("user"),
   reducers: {
     setUser: (state, action) => {
