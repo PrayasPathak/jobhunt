@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 
 @Service
@@ -51,31 +52,8 @@ public class ProfileServiceImpl implements ProfileService {
         existingProfile.setSkills(dto.getSkills());
         existingProfile.setExperiences(dto.getExperiences());
         existingProfile.setCertifications(dto.getCertifications());
-
-        List<Experience> existingExperiences = existingProfile.getExperiences();
-        List<Experience> incomingExperiences = dto.getExperiences();
-
-        List<Experience> mergedExperiences = new ArrayList<>();
-
-        for (int i = 0; i < incomingExperiences.size(); i++) {
-            Experience newExp = incomingExperiences.get(i);
-            Experience oldExp = (existingExperiences != null && i < existingExperiences.size())
-                    ? existingExperiences.get(i)
-                    : new Experience();
-            Experience merged = new Experience(
-                    newExp.getTitle() != null ? newExp.getTitle() : oldExp.getTitle(),
-                    newExp.getCompany() != null ? newExp.getCompany() : oldExp.getCompany(),
-                    newExp.getLocation() != null ? newExp.getLocation() : oldExp.getLocation(),
-                    newExp.getStartDate() != null ? newExp.getStartDate() : oldExp.getStartDate(),
-                    newExp.getEndDate() != null ? newExp.getEndDate() : oldExp.getEndDate(),
-                    newExp.getWorking() != null ? newExp.getWorking() : oldExp.getWorking(),
-                    newExp.getDescription() != null ? newExp.getDescription() : oldExp.getDescription()
-            );
-            mergedExperiences.add(merged);
-        }
-        existingProfile.setExperiences(mergedExperiences);
-
-
+        if(dto.getPicture() != null)
+            existingProfile.setPicture(Base64.getDecoder().decode(dto.getPicture()));
         Profile updatedProfile = profileRepository.save(existingProfile);
         return updatedProfile.toDto();
     }

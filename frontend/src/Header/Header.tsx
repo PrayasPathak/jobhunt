@@ -3,11 +3,23 @@ import { IconAnchor, IconBell, IconSettings } from "@tabler/icons-react";
 import { Link, useLocation } from "react-router-dom";
 import NavLinks from "./NavLinks";
 import ProfileMenu from "./ProfileMenu";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { getProfile } from "../Services/ProfileService";
+import { setProfile } from "../Slices/ProfileSlice";
 
 const Header = () => {
   const location = useLocation();
   const user = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    getProfile(user.profileId)
+      .then((data) => {
+        dispatch(setProfile(data));
+      })
+      .catch((err) => console.log(err));
+  }, []);
 
   return location.pathname != "/signup" && location.pathname != "/login" ? (
     <div className="w-full h-20 bg-mine-shaft-950 font-['Poppins'] text-white px-6 flex justify-between items-center">

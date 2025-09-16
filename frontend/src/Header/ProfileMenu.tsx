@@ -18,6 +18,7 @@ const ProfileMenu = () => {
   const [opened, setOpened] = useState(false);
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
+  const profile = useSelector((state) => state.profile);
 
   const handleLogout = () => {
     dispatch(removeUser());
@@ -28,7 +29,14 @@ const ProfileMenu = () => {
       <Menu.Target>
         <div className="flex gap-2 items-center cursor-pointer">
           <span>{user.name}</span>
-          <Avatar src="avatar.png" alt="User Avatar" />
+          <Avatar
+            src={
+              profile.picture
+                ? `data:image/jpeg;base64, ${profile.picture}`
+                : "/avatar.png"
+            }
+            alt="User Avatar"
+          />
         </div>
       </Menu.Target>
 
