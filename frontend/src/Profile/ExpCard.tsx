@@ -2,6 +2,9 @@ import { Button } from "@mantine/core";
 import { useState } from "react";
 import ExpInput from "./ExpInput";
 import { formatDate } from "../Services/Utilities";
+import { useDispatch, useSelector } from "react-redux";
+import { successNotification } from "../Services/NotificationService";
+import { changeProfile } from "../Slices/ProfileSlice";
 
 interface Props {
   title: string;
@@ -11,10 +14,22 @@ interface Props {
   endDate: string;
   description: string;
   edit: boolean;
+  working: boolean;
+  index: number;
 }
 
 const ExpCard = (props: Props) => {
   const [edit, setEdit] = useState(false);
+  const profile = useSelector((state) => state.profile);
+  const dispatch = useDispatch();
+
+  const handleDelete = () => {
+    const exp = [...profile.experiences];
+    exp.splice(props.index, 1);
+    const updatedProfile = { ...profile, experiences: exp };
+    dispatch(changeProfile(updatedProfile));
+    successNotification("Succcess", "Experience Deleted Successfully");
+  };
 
   return !edit ? (
     <div className="flex flex-col gap-2">
@@ -35,7 +50,8 @@ const ExpCard = (props: Props) => {
           </div>
         </div>
         <div className="text-sm text-mine-shaft-300">
-          {formatDate(props.startDate)} - {formatDate(props.endDate)}
+          {formatDate(props.startDate)} -{" "}
+          {props.working ? "Present" : formatDate(props.endDate)}
         </div>
       </div>
       <div className="text-sm text-mine-shaft-300 text-justify">
@@ -50,14 +66,14 @@ const ExpCard = (props: Props) => {
           >
             Edit
           </Button>
-          <Button color="red.8" variant="light">
+          <Button color="red.8" variant="light" onClick={handleDelete}>
             Delete
           </Button>
         </div>
       )}
     </div>
   ) : (
-    <ExpInput setEdit={setEdit} />
+    <ExpInput setEdit={setEdit} {...props} />
   );
 };
 export default ExpCard;

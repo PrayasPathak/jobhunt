@@ -1,17 +1,18 @@
-import { useState } from "react";
 import { ActionIcon } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import {
   IconBriefcase,
-  IconDeviceFloppy,
+  IconCheck,
   IconMapPin,
   IconPencil,
+  IconX,
 } from "@tabler/icons-react";
-import { SelectInput } from "./SelectInput";
-import fields from "../Data/Profile";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { changeProfile } from "../Slices/ProfileSlice";
+import fields from "../Data/Profile";
 import { successNotification } from "../Services/NotificationService";
+import { changeProfile } from "../Slices/ProfileSlice";
+import { SelectInput } from "./SelectInput";
 
 const Info = () => {
   const select = fields;
@@ -38,23 +39,39 @@ const Info = () => {
         location: profile.location,
       });
     } else {
-      setEdit(!edit);
-      const updatedProfile = { ...profile, ...form.getValues() };
-      dispatch(changeProfile(updatedProfile));
-      successNotification("Success", "Profile updated successfully");
+      setEdit(false);
     }
   };
+
+  const handleSave = () => {
+    setEdit(false);
+    const updatedProfile = { ...profile, ...form.getValues() };
+    dispatch(changeProfile(updatedProfile));
+    successNotification("Success", "Info updated successfully");
+  };
+
   return (
     <>
       <div className="text-3xl font-semibold flex justify-between">
         {user.name}
-        <ActionIcon variant="subtle" color="brightSun.4" size="lg">
-          {edit ? (
-            <IconDeviceFloppy className="h-4/5 w-4/5" onClick={handleClick} />
-          ) : (
-            <IconPencil className="h-4/5 w-4/5" onClick={handleClick} />
+        <div>
+          {edit && (
+            <ActionIcon variant="subtle" color="green.8" size="lg">
+              <IconCheck className="h-4/5 w-4/5" onClick={handleSave} />
+            </ActionIcon>
           )}
-        </ActionIcon>
+          <ActionIcon
+            variant="subtle"
+            color={`${edit ? "red.8" : "brightSun.4"}`}
+            size="lg"
+          >
+            {edit ? (
+              <IconX className="h-4/5 w-4/5" onClick={handleClick} />
+            ) : (
+              <IconPencil className="h-4/5 w-4/5" onClick={handleClick} />
+            )}
+          </ActionIcon>
+        </div>
       </div>
       {edit ? (
         <>
