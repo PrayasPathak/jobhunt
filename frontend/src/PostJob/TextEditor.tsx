@@ -5,9 +5,13 @@ import StarterKit from "@tiptap/starter-kit";
 import TextAlign from "@tiptap/extension-text-align";
 import Superscript from "@tiptap/extension-superscript";
 import SubScript from "@tiptap/extension-subscript";
-import { content } from "../Data/PostJob";
+import { UseFormReturnType } from "@mantine/form";
 
-export default function TextEditor() {
+interface Props {
+  form: UseFormReturnType<any>;
+}
+
+export default function TextEditor(props: Props) {
   const editor = useEditor({
     shouldRerenderOnTransaction: true,
     extensions: [
@@ -18,7 +22,10 @@ export default function TextEditor() {
       Highlight,
       TextAlign.configure({ types: ["heading", "paragraph"] }),
     ],
-    content,
+    content: props.form.getValues().description,
+    onUpdate: ({ editor }) => {
+      props.form.setFieldValue("description", editor.getHTML());
+    },
   });
 
   return (

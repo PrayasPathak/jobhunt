@@ -14,7 +14,7 @@ const Header = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    getProfile(user.profileId)
+    getProfile(user?.profileId)
       .then((data) => {
         dispatch(setProfile(data));
       })

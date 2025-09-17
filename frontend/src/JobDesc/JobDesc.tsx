@@ -1,37 +1,39 @@
 import { ActionIcon, Button, Divider } from "@mantine/core";
 import { IconBookmark } from "@tabler/icons-react";
 import { Link } from "react-router-dom";
-import { card, desc, skills } from "../Data/JobDescData";
+import { card } from "../Data/JobDescData";
 import DOMPurify from "dompurify";
+import { timeAgo } from "../Services/Utilities";
 
-interface Props {
-  edit: boolean;
-}
-
-const JobDesc = ({ edit }: Props) => {
-  const data = DOMPurify.sanitize(desc);
+const JobDesc = (props: any) => {
+  const data = DOMPurify.sanitize(props.description);
   return (
     <div className="w-2/3">
       {/* Description */}
       <div className="flex justify-between">
         <div className="flex gap-2 items-center">
           <div className="p-3 bg-mine-shaft-800 rounded-xl">
-            <img src={`/icons/Google.png`} alt="Meta" className="h-14" />
+            <img
+              src={`/icons/${props.company}.png`}
+              alt="Meta"
+              className="h-14"
+            />
           </div>
           <div className="flex flex-col gap-1">
-            <div className="font-semibold text-2xl">Software Engineer III</div>
+            <div className="font-semibold text-2xl">{props.jobTitle}</div>
             <div className="text-lg text-mine-shaft-300">
-              Google &#x2022; 3 days ago &bull; 48 Applicants
+              {props.company} &#x2022; {timeAgo(props.postTime)} &bull;{" "}
+              {props.applicants ? props.applicants.length : 0} Applicants
             </div>
           </div>
         </div>
         <div className="flex flex-col gap-2 items-center">
-          <Link to="/apply-job">
+          <Link to={`/apply-job/${props.id}`}>
             <Button variant="light" color="brightSun.4" size="sm">
-              {edit ? "Edit" : "Apply"}
+              {props.edit ? "Edit" : "Apply"}
             </Button>
           </Link>
-          {edit ? (
+          {props.edit ? (
             <Button variant="outline" size="sm" color="red.5">
               Delete
             </Button>
@@ -54,7 +56,10 @@ const JobDesc = ({ edit }: Props) => {
               <item.icon stroke={1.5} className="h-4/5 w-4/5" />
             </ActionIcon>
             <div className="text-sm text-mine-shaft-300">{item.name}</div>
-            <div className="font-semibold">{item.value}</div>
+            <div className="font-semibold">
+              {props ? props[item.id] : "NA"}{" "}
+              {item.id === "packageOffered" && <>LPA</>}
+            </div>
           </div>
         ))}
       </div>
@@ -63,7 +68,7 @@ const JobDesc = ({ edit }: Props) => {
       <div>
         <div className="text-xl font-semibold mb-5">Required Skills</div>
         <div className="flex flex-wrap gap-2">
-          {skills.map((skill, index) => (
+          {props?.skillsRequired?.map((skill: any, index: number) => (
             <div key={index}>
               <ActionIcon
                 size="lg"
@@ -92,14 +97,18 @@ const JobDesc = ({ edit }: Props) => {
         <div className="flex justify-between mb-3">
           <div className="flex gap-2 items-center">
             <div className="p-3 bg-mine-shaft-800 rounded-xl">
-              <img src={`/icons/Google.png`} alt="Meta" className="h-8" />
+              <img
+                src={`/icons/${props.company}.png`}
+                alt={props.company}
+                className="h-8"
+              />
             </div>
             <div className="flex flex-col">
-              <div className="font-medium text-lg">Google</div>
+              <div className="font-medium text-lg">{props.company}</div>
               <div className=" text-mine-shaft-300">10K+ Employees</div>
             </div>
           </div>
-          <Link to="/company">
+          <Link to={`/company/${props.company}`}>
             <Button variant="light" color="brightSun.4">
               Company Page
             </Button>

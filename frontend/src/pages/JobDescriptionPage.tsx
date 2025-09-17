@@ -1,10 +1,23 @@
 import { Button } from "@mantine/core";
 import { IconArrowLeft } from "@tabler/icons-react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import JobDesc from "../JobDesc/JobDesc";
 import RecommendedJobs from "../JobDesc/RecommendedJobs";
+import { useEffect, useState } from "react";
+import { getJobById } from "../Services/JobService";
 
 const JobDescriptionPage = () => {
+  const { id } = useParams();
+  const [job, setJob] = useState<any>(null);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    getJobById(id)
+      .then((res) => {
+        setJob(res);
+      })
+      .catch((err) => console.log(err));
+  }, [id]);
   return (
     <div className="min-h-[100vh] bg-mine-shaft-950 font-['Poppins'] p-4">
       <Link to="/find-jobs" className="my-4 inline-block">
@@ -17,7 +30,7 @@ const JobDescriptionPage = () => {
         </Button>
       </Link>
       <div className="flex gap-5 justify-around">
-        <JobDesc edit={false} />
+        <JobDesc {...job} />
         <RecommendedJobs />
       </div>
     </div>

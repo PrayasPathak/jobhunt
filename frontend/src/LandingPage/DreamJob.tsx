@@ -34,15 +34,15 @@ const DreamJob = () => {
       {/* Right Section */}
       <div className="w-[55%] flex items-center justify-center">
         <div className="w-[30rem] relative">
-          <img src="boy.png" alt="boy" />
+          <img src="/boy.png" alt="boy" />
           <div className="w-fit absolute top-[50%] -right-10 border-bright-sun-400 border rounded-lg p-2 backdrop-blur-md">
             <div className="text-center text-mine-shaft-100 mb-1 text-sm">
               10K+ got job
             </div>
             <AvatarGroup>
-              <Avatar src="avatar.png" />
-              <Avatar src="avatar1.png" />
-              <Avatar src="avatar2.png" />
+              <Avatar src="/avatar.png" />
+              <Avatar src="/avatar1.png" />
+              <Avatar src="/avatar2.png" />
               <Avatar>+9K</Avatar>
             </AvatarGroup>
           </div>
@@ -50,7 +50,7 @@ const DreamJob = () => {
           <div className="w-fit absolute top-[28%] -left-5 border-bright-sun-400 border rounded-lg p-2 backdrop-blur-md flex flex-col gap-3">
             <div className="flex gap-2 items-center">
               <div className="w-10 h-10 p-1 bg-mine-shaft-900 rounded-lg">
-                <img src="google.png" alt="Google" />
+                <img src="/google.png" alt="Google" />
               </div>
               <div className="text-sm text-mine-shaft-100">
                 <div>Software Engineer</div>
