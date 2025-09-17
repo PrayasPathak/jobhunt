@@ -1,38 +1,43 @@
-package com.jobportal.dto;
+package com.jobportal.entity;
 
-import com.jobportal.entity.Applicant;
+
+import com.jobportal.dto.ApplicantDto;
+import com.jobportal.dto.ApplicationStatus;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
 import java.util.Base64;
 
-@Data
+@Document(collection = "applicants")
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ApplicantDto {
+public class Applicant {
     private String applicantTd;
     private String name;
     private String email;
     private String phone;
     private String github;
-    private String resume;
+    private byte[] resume;
     private String coverLetter;
     private LocalDateTime timestamp;
     private ApplicationStatus applicationStatus;
 
-    public Applicant toEntity() {
-        return new Applicant(
+    public ApplicantDto toDto() {
+        return new ApplicantDto(
                 this.applicantTd,
                 this.name,
                 this.email,
                 this.phone,
                 this.github,
-                this.resume != null ? Base64.getDecoder().decode(this.resume) : null,
+                this.resume != null ? Base64.getEncoder().encodeToString(this.resume) : null,
                 this.coverLetter,
                 this.timestamp,
-                this.applicationStatus
-        );
+                this.applicationStatus);
     }
 }

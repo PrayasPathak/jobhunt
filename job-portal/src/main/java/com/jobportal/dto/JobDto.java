@@ -16,7 +16,7 @@ public class JobDto {
     private String jobTitle;
     private String company;
     private String about;
-    private List<ApplicantDto> applicantDtos;
+    private List<ApplicantDto> applicants;
     private String experience;
     private String jobType;
     private String location;
@@ -32,7 +32,7 @@ public class JobDto {
                 this.jobTitle,
                 this.company,
                 this.about,
-                this.applicantDtos,
+                this.applicants != null ? this.applicants.stream().map(ApplicantDto::toEntity).toList() : null,
                 this.experience,
                 this.jobType,
                 this.location,
