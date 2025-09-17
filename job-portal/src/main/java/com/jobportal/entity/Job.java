@@ -1,6 +1,6 @@
 package com.jobportal.entity;
 
-import com.jobportal.dto.Applicant;
+import com.jobportal.dto.ApplicantDto;
 import com.jobportal.dto.JobDto;
 import com.jobportal.dto.JobStatus;
 import lombok.AllArgsConstructor;
@@ -24,7 +24,7 @@ public class Job {
     private String jobTitle;
     private String company;
     private String about;
-    private List<Applicant> applicants;
+    private List<ApplicantDto> applicantDtos;
     private String experience;
     private String jobType;
     private String location;
@@ -40,7 +40,7 @@ public class Job {
                 this.jobTitle,
                 this.company,
                 this.about,
-                this.applicants,
+                this.applicantDtos,
                 this.experience,
                 this.jobType,
                 this.location,
