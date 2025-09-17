@@ -26,3 +26,12 @@ export const getJobById = async (jobId: string) => {
       throw error;
     });
 };
+
+export const applyJob = async (id: string, applicant: any) => {
+  return axiosInstance
+    .post(`/api/jobs/apply/${id}`, applicant)
+    .then((res) => res.data)
+    .catch((error) => {
+      throw error;
+    });
+};
