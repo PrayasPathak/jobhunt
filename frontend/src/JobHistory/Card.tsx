@@ -6,66 +6,63 @@ import {
   IconClockHour3,
 } from "@tabler/icons-react";
 import { Link } from "react-router-dom";
+import { timeAgo } from "../Services/Utilities";
+import { useDispatch, useSelector } from "react-redux";
+import { changeProfile } from "../Slices/ProfileSlice";
 
-interface Props {
-  company: string;
-  applicants: number;
-  jobTitle: string;
-  experience: string;
-  jobType: string;
-  location: string;
-  jobPackage: string;
-  postedDaysAgo: number;
-  description: string;
-  applied?: boolean;
-  saved?: boolean;
-  offered?: boolean;
-  interviewing?: boolean;
-}
+const Card = (props: any) => {
+  const profile = useSelector((state) => state.profile);
+  const dispatch = useDispatch();
 
-const Card = ({
-  company,
-  applicants,
-  jobTitle,
-  experience,
-  jobType,
-  location,
-  jobPackage,
-  postedDaysAgo,
-  description,
-  applied,
-  saved,
-  offered,
-  interviewing,
-}: Props) => {
+  const handleSaveJob = () => {
+    let savedJobs = [...profile.savedJobs];
+    if (savedJobs?.includes(props.id)) {
+      savedJobs = savedJobs?.filter((id) => id !== props.id);
+    } else {
+      savedJobs = [...savedJobs, props.id];
+    }
+    const updatedProfile = { ...profile, savedJobs: savedJobs };
+    dispatch(changeProfile(updatedProfile));
+  };
+
   return (
-    <Link
-      to="/jobs"
-      className="bg-mine-shaft-900 p-4 w-80 flex flex-col gap-3 rounded-xl hover:shadow-[0_0_5px_1px_yellow] !shadow-bright-sun-400 cursor-pointer"
-    >
+    <div className="bg-mine-shaft-900 p-4 w-80 flex flex-col gap-3 rounded-xl hover:shadow-[0_0_5px_1px_yellow] !shadow-bright-sun-400 cursor-pointer">
       <div className="flex justify-between">
         <div className="flex gap-2 items-center">
           <div className="p-2 bg-mine-shaft-800 rounded-md">
-            <img src={`/icons/${company}.png`} alt="Meta" className="h-7" />
+            <img
+              src={`/icons/${props.company}.png`}
+              alt="Meta"
+              className="h-7"
+            />
           </div>
           <div>
-            <div>{jobTitle}</div>
+            <div>{props.jobTitle}</div>
             <div className="text-sm text-mine-shaft-300 font-semibold">
-              {company} &#x2022; {applicants} Applicants
+              {props.company} &#x2022;{" "}
+              {props.applicants ? props.applicants.length : 0} Applicants
             </div>
           </div>
         </div>
-        {saved ? (
-          <IconBookmarkFilled className="text-bright-sun-400 cursor-pointer" />
+        {profile.savedJobs?.includes(props.id) ? (
+          <IconBookmarkFilled
+            className="cursor-pointer text-bright-sun-400"
+            stroke={1.5}
+            onClick={handleSaveJob}
+          />
         ) : (
-          <IconBookmark className="text-mine-shaft-300 cursor-pointer" />
+          <IconBookmark
+            className="text-mine-shaft-300 cursor-pointer hover:text-bright-sun-400"
+            stroke={1.5}
+            onClick={handleSaveJob}
+          />
         )}
       </div>
       {/* Job Titles */}
       <div className="flex gap-2 [&>span]:py-1 [&>span]:px-2 [&>span]:bg-mine-shaft-800 [&>span]:text-bright-sun-400 [&>span]:rounded-lg text-xs">
-        <span>{experience}</span>
-        <span>{jobType}</span>
-        <span>{location}</span>
+        <span>{props.experience}</span>
+        <span>{props.jobType}</span>
+        <span>{props.location}</span>
       </div>
       {/* Job Description */}
       <div>
@@ -73,27 +70,27 @@ const Card = ({
           lineClamp={3}
           className="!text-xs text-justify text-mine-shaft-300"
         >
-          {description}
+          {props.about}
         </Text>
       </div>
       <Divider size="xs" color="mineShaft.7" />
       {/* Salary and ob Posted Time */}
       <div className="flex justify-between">
         <span className="font-semibold text-mine-shaft-200">
-          &#8377; {jobPackage}
+          &#8377; {props.packageOffered} LPA
         </span>
         <span className="flex gap-1 items-center text-xs text-mine-shaft-400">
           <IconClockHour3 stroke={1.5} className="h-5 w-5" />{" "}
-          {applied || interviewing
+          {props.applied || props.interviewing
             ? "Applied"
-            : offered
+            : props.offered
             ? "Interviewed"
             : "Posted"}{" "}
-          {postedDaysAgo} days ago
+          {timeAgo(props.postTime)}
         </span>
       </div>
-      {(offered || interviewing) && <Divider color="mineShaft.4" />}
-      {offered && (
+      {(props.offered || props.interviewing) && <Divider color="mineShaft.4" />}
+      {props.offered && (
         <div className="flex gap-2">
           <Button color="brightSun.4" variant="outline" fullWidth>
             Accept
@@ -104,7 +101,7 @@ const Card = ({
         </div>
       )}
 
-      {interviewing && (
+      {props.interviewing && (
         <div className="flex gap-1 text-sm items-center">
           <IconCalendarMonth
             stroke={1.5}
@@ -114,7 +111,12 @@ const Card = ({
           <span className="text-mine-shaft-400">15:00 PM</span>
         </div>
       )}
-    </Link>
+      <Link to={`/jobs/${props.id}`}>
+        <Button fullWidth color="brightSun.4" variant="outline">
+          View
+        </Button>
+      </Link>
+    </div>
   );
 };
 export default Card;

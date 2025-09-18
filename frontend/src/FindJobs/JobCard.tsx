@@ -80,7 +80,7 @@ const JobCard = (props: any) => {
         </span>
         <span className="flex gap-1 items-center text-xs text-mine-shaft-400">
           <IconClockHour3 stroke={1.5} className="h-5 w-5" />{" "}
-          {timeAgo(props.postTime)} ago
+          {timeAgo(props.postTime)}
         </span>
       </div>
       <Link to={`/jobs/${props.id}`}>

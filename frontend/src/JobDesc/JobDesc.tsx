@@ -16,8 +16,6 @@ const JobDesc = (props: any) => {
 
   const [applied, setApplied] = useState(false);
 
-  console.log(props.applicants);
-  console.log(user);
   useEffect(() => {
     if (
       props.applicants?.filter(
