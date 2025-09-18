@@ -28,6 +28,7 @@ public class ProfileServiceImpl implements ProfileService {
         profile.setSkills(new ArrayList<>());
         profile.setExperiences(new ArrayList<>());
         profile.setCertifications(new ArrayList<>());
+        profile.setSavedJobs(new ArrayList<>());
 
         profile = profileRepository.save(profile);
         return profile.getId();
@@ -54,7 +55,23 @@ public class ProfileServiceImpl implements ProfileService {
         existingProfile.setCertifications(dto.getCertifications());
         if(dto.getPicture() != null)
             existingProfile.setPicture(Base64.getDecoder().decode(dto.getPicture()));
+        existingProfile.setSavedJobs(dto.getSavedJobs());
         Profile updatedProfile = profileRepository.save(existingProfile);
         return updatedProfile.toDto();
     }
+
+    @Override
+    public ProfileDto getProfileByUserId(String userId) {
+        Profile profile = profileRepository.findByUserId(userId)
+                .orElseThrow(() -> new JobPortalException("Profile not found"));
+        return profile.toDto();
+    }
+
+    @Override
+    public ProfileDto getProfileByEmail(String email) {
+        Profile profile = profileRepository.findByEmail(email)
+                .orElseThrow(() -> new JobPortalException("Profile not found"));
+        return profile.toDto();
+    }
+
 }

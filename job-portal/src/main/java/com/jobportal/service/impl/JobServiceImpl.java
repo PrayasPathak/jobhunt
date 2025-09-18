@@ -1,14 +1,12 @@
 package com.jobportal.service.impl;
 
-import com.jobportal.dto.ApplicantDto;
-import com.jobportal.dto.ApplicationStatus;
-import com.jobportal.dto.JobDto;
-import com.jobportal.dto.JobStatus;
+import com.jobportal.dto.*;
 import com.jobportal.entity.Applicant;
 import com.jobportal.entity.Job;
 import com.jobportal.exception.JobPortalException;
 import com.jobportal.repository.JobRepository;
 import com.jobportal.service.JobService;
+import com.jobportal.service.ProfileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +18,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class JobServiceImpl implements JobService {
     private final JobRepository jobRepository;
+    private final ProfileService profileService;
 
     @Override
     public JobDto postJob(JobDto dto) throws JobPortalException {
@@ -46,14 +45,18 @@ public class JobServiceImpl implements JobService {
     @Override
     public void applyJob(String id, ApplicantDto dto) throws JobPortalException {
         Job job = jobRepository.findById(id).orElseThrow(() -> new JobPortalException("Job not found"));
+        ProfileDto profile = profileService.getProfileByEmail(dto.getEmail());
+        dto.setApplicantTd(profile.getId());
         List<Applicant> applicants = job.getApplicants();
         if(applicants == null)
             applicants = new ArrayList<>();
-        if(applicants.stream().filter((x) -> x.getApplicantTd() == dto.getApplicantTd()).toList().size()>0)
+        boolean alreadyApplied = applicants.stream()
+                .anyMatch(a -> profile.getId().equals(a.getApplicantTd()));
+        if (alreadyApplied)
             throw new JobPortalException("Job applied already");
         dto.setApplicationStatus(ApplicationStatus.APPLIED);
         applicants.add(dto.toEntity());
         job.setApplicants(applicants);
-        job = jobRepository.save(job);
+        jobRepository.save(job);
     }
 }

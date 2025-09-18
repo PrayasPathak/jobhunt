@@ -8,4 +8,9 @@ public interface ProfileService {
     ProfileDto getProfile(String id);
 
     ProfileDto updateProfile(ProfileDto req);
+
+    ProfileDto getProfileByUserId(String userId);
+
+    ProfileDto getProfileByEmail(String email);
+
 }

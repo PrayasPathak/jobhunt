@@ -10,6 +10,8 @@ const JobDescriptionPage = () => {
   const { id } = useParams();
   const [job, setJob] = useState<any>(null);
 
+  console.log(job);
+
   useEffect(() => {
     window.scrollTo(0, 0);
     getJobById(id)
